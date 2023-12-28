@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water IDE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/clike/clike.min.js"></script>
+
+    <style>
+        /* Adicione estilos conforme necessário */
+        .CodeMirror {
+            height: 300px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Water IDE</h1>
+    </header>
+
+    <main>
+        <textarea id="editor">Título("jogo teste");</textarea>
+        <button onclick="runCode()">Run</button>
+        <button onclick="exportToWater()">Exportar</button>
+        <div id="output"></div>
+    </main>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: 'text/x-csrc',
+            lineNumbers: true,
+            theme: 'default'
+        });
+
+        function runCode() {
+            const code = editor.getValue();
+            executeWaterCode(code);
+        }
+
+        function executeWaterCode(code) {
+            // Lógica para interpretar e executar o código Water
+            const lines = code.split('\n');
+            let result = "Resultado:\n";
+            
+            lines.forEach(line => {
+                if (line.startsWith("Título(")) {
+                    const message = line.match(/"([^"]+)"/)[1];
+                    result = `${message}\n`;
+                }
+                // Adicione mais condições para outros comandos aqui
+            });
+
+            document.getElementById('output').innerText = result;
+        }
+
+        function exportToWater() {
+            const code = editor.getValue();
+            const blob = new Blob([code], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = 'jogo.wt';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
