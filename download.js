@@ -1,0 +1,1 @@
+a.download = 'jogo.wt';
